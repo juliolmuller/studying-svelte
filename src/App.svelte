@@ -1,5 +1,6 @@
 <script lang="ts">
   import FeedbackCard from './components/FeedbackCard.svelte'
+  import Stats from './components/Stats.svelte'
 
   let feedbacks = [
     {
@@ -19,13 +20,16 @@
     },
   ]
 
+  $: feedbacksCount = feedbacks.length
+  $: avarageRating = feedbacks.reduce((total, { rating }) => total + rating, 0) / feedbacksCount
+
   function handleDelete(event: CustomEvent<number>) {
     feedbacks = feedbacks.filter(({ id }) => id !== event.detail)
   }
 </script>
 
-<main class="container">
-  <h1>Hello, there!</h1>
+<main class="root container">
+  <Stats avarage={avarageRating} count={feedbacksCount} />
 
   <div role="list">
     {#each feedbacks as feedback (feedback.id)}
@@ -39,4 +43,6 @@
   </div>
 </main>
 
-<style lang="scss"></style>
+<style lang="scss">
+  .root {}
+</style>

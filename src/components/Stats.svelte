@@ -1,0 +1,20 @@
+<script lang="ts">
+  export let avarage: number
+  export let count: number
+</script>
+
+<div class="root">
+  <p>Average rating: {avarage || 0}</p>
+  <p>{count || 0} feedbacks</p>
+</div>
+
+<style lang="scss">
+  .root {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    font-size: 1.25rem;
+    font-weight: 700;
+  }
+</style>
