@@ -1,79 +1,42 @@
 <script lang="ts">
-  let firstName = 'Josnei'
-  let  lastName = 'Pônei'
-  let isArriving = true
-  let logs: string[] = []
+  import FeedbackCard from './components/FeedbackCard.svelte'
 
-  $: name = `${firstName} ${lastName}`
+  let feedbacks = [
+    {
+      id: 1,
+      rating: 10,
+      body: 'Similique qui aspernatur animi quasi voluptatibus dolorem totam. Eligendi illo sunt omnis. Molestiae quidem eveniet animi neque ipsum autem a velit. Doloribus quae ut ipsum dicta qui sunt. Et aliquid in. Quia enim quaerat tempore quae in in.',
+    },
+    {
+      id: 2,
+      rating: 9,
+      body: 'Ea voluptatem repudiandae officia numquam. Quae asperiores totam iusto. Quam eaque minus.',
+    },
+    {
+      id: 3,
+      rating: 8,
+      body: 'Similique repellendus voluptatem nam consequuntur fugiat eaque facere aut tenetur. Veritatis aut inventore unde quod sint et sapiente voluptatem architecto. Molestias voluptatem molestias rerum est voluptas.',
+    },
+  ]
 
-  function toggle() {
-    const time = new Date().toString().slice(16, 24)
-    logs = [...logs, isArriving ? `Left at ${time}` : `Arrived at ${time}`]
-    isArriving = !isArriving
+  function handleDelete(event: CustomEvent<number>) {
+    feedbacks = feedbacks.filter(({ id }) => id !== event.detail)
   }
 </script>
 
-<main>
-  <h1>
-    {#if isArriving}
-      Hello, {name}!
-    {:else}
-      Good-bye, {name}!
-    {/if}
-  </h1>
+<main class="container">
+  <h1>Hello, there!</h1>
 
-  <button on:click={toggle}>
-    Say {isArriving ? 'Good-Bye' : 'Hello'}
-  </button>
-
-  <ul>
-    {#each logs as log}
-      <li>{log}</li>
+  <div role="list">
+    {#each feedbacks as feedback (feedback.id)}
+      <FeedbackCard
+        id={feedback.id}
+        rating={feedback.rating}
+        body={feedback.body}
+        on:delete={handleDelete}
+      />
     {/each}
-  </ul>
+  </div>
 </main>
 
-<style lang="scss">
-  main {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    gap: 2rem;
-
-    width: 100%;
-    min-height: 100vh;
-    background-color: #333;
-    color: #fff;
-  }
-
-  button {
-    outline: none;
-    border: none;
-    border-radius: 6px;
-    background-color: #224;
-    padding: 0.5rem;
-
-    color: #fff;
-    font-weight: 700;
-
-    transition: filter 200ms;
-
-    &:hover {
-      filter: brightness(80%);
-    }
-  }
-
-  ul {
-    overflow: auto;
-    height: 50vh;
-    width: 240px;
-    border-radius: 6px;
-    background-color: #444;
-    padding: 1rem 2rem;
-
-    li + li {
-      margin-top: 0.5rem;
-    }
-  }
-</style>
+<style lang="scss"></style>
