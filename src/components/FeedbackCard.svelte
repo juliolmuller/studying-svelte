@@ -3,7 +3,7 @@
 
   const dispatch = createEventDispatcher()
 
-  export let id: number
+  export let id: string
   export let rating: number
   export let body: string
 
