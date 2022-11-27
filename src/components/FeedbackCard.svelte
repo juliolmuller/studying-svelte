@@ -1,7 +1,5 @@
 <script lang="ts">
-  import { createEventDispatcher } from 'svelte'
-
-  const dispatch = createEventDispatcher()
+  import { FeedbackStore } from '../stores'
 
   export let id: string
   export let rating: number
@@ -9,7 +7,9 @@
 
   function handelDelete() {
     if (confirm('Are you sure you wanna delete this feedback?'))
-    dispatch('delete', id)
+      FeedbackStore.update((feedbacks) => {
+        return feedbacks.filter((feedback) => feedback.id !== id)
+      })
   }
 </script>
 

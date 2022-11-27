@@ -1,6 +1,18 @@
 <script lang="ts">
-  export let avarage: number
-  export let count: number
+  import { onDestroy } from 'svelte'
+  import { FeedbackStore } from '../stores'
+  import type { Feedback } from '../stores'
+
+  let feedbacks: Feedback[] = []
+
+  const unsubscribeStore = FeedbackStore.subscribe((data) => {
+    feedbacks = data
+  })
+
+  onDestroy(unsubscribeStore)
+
+  $: count = feedbacks.length
+  $: avarage = feedbacks.reduce((total, { rating }) => total + rating, 0) / count
 </script>
 
 <div class="root">

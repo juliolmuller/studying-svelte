@@ -1,9 +1,8 @@
 <script lang="ts">
-  import { createEventDispatcher } from 'svelte'
   import { v4 as uuid } from 'uuid'
   import RatingButtons from './RatingButtons.svelte'
-
-  const dispatch = createEventDispatcher()
+  import { FeedbackStore } from '../stores'
+  import type { Feedback } from '../stores'
 
   const MIN_TEXT_LENGTH = 10
 
@@ -13,19 +12,15 @@
   $: textLength = feedbackText.trim().length
   $: canSubmit = feedbackRating> 0 && textLength >= MIN_TEXT_LENGTH
 
-  function handleSelect(event) {
-    feedbackRating = event.detail
-  }
-
   function handleSubmit(event) {
     if(canSubmit) {
-      const newFeedback = {
+      const newFeedback: Feedback = {
         rating: feedbackRating,
-        text: feedbackText,
+        body: feedbackText,
         id: uuid(),
       }
 
-      dispatch('create', newFeedback)
+      FeedbackStore.update((feedbacks) => [newFeedback, ...feedbacks])
       feedbackRating = 0
       feedbackText = ''
     }
