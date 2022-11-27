@@ -1,6 +1,7 @@
 <script lang="ts">
-import {v4 as uuid} from 'uuid'
+  import { v4 as uuid } from 'uuid'
   import FeedbackCard from './components/FeedbackCard.svelte'
+  import FeedbackForm from './components/FeedbackForm.svelte'
   import Stats from './components/Stats.svelte'
 
   let feedbacks = [
@@ -24,12 +25,19 @@ import {v4 as uuid} from 'uuid'
   $: feedbacksCount = feedbacks.length
   $: avarageRating = feedbacks.reduce((total, { rating }) => total + rating, 0) / feedbacksCount
 
+  function handleCreate(event: CustomEvent) {
+    const newFeedback = event.detail
+    feedbacks = [newFeedback, ...feedbacks]
+  }
+
   function handleDelete(event: CustomEvent<string>) {
     feedbacks = feedbacks.filter(({ id }) => id !== event.detail)
   }
 </script>
 
 <main class="root container">
+  <FeedbackForm on:create={handleCreate} />
+
   <Stats avarage={avarageRating} count={feedbacksCount} />
 
   <div role="list">
