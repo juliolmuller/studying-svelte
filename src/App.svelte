@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { fade, scale } from 'svelte/transition'
   import { v4 as uuid } from 'uuid'
   import FeedbackCard from './components/FeedbackCard.svelte'
   import FeedbackForm from './components/FeedbackForm.svelte'
@@ -42,12 +43,14 @@
 
   <div role="list">
     {#each feedbacks as feedback (feedback.id)}
-      <FeedbackCard
-        id={feedback.id}
-        rating={feedback.rating}
-        body={feedback.body}
-        on:delete={handleDelete}
-      />
+      <div in:scale out:fade>
+        <FeedbackCard
+          id={feedback.id}
+          rating={feedback.rating}
+          body={feedback.body}
+          on:delete={handleDelete}
+        />
+      </div>
     {/each}
   </div>
 </main>
